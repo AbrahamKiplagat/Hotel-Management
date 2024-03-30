@@ -1,16 +1,18 @@
-# hotel_management
 
-A new Flutter project.
+# Hotel Management App
 
-## Getting Started
+# Description:
+This repository contains the source code for a hotel management app built using Flutter. The app provides comprehensive management features for hotel administrators and users. Administrators can manage rooms, bookings, and user accounts, while users can make bookings, view their reservations, and provide feedback. The app includes authentication functionality for both admins and users, ensuring secure access to the app's features. It offers a user-friendly interface, smooth navigation, and seamless integration with backend services. Whether you're a hotel owner looking to streamline operations or a traveler seeking a convenient booking experience, this app serves as an efficient solution for managing hotel activities.
 
-This project is a starting point for a Flutter application.
+#Features:
 
-A few resources to get you started if this is your first Flutter project:
+- Admin Dashboard: Manage rooms, bookings, and user accounts.
+- User Dashboard: Make bookings, view reservations, and provide feedback.
+- Authentication: Secure login for both admins and users.
+- Intuitive UI: User-friendly interface for easy navigation.
+- Backend Integration: Seamlessly integrates with backend services for data management.
+# Technologies Used:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter: Cross-platform framework for building mobile applications.
+- Dart: Programming language used for Flutter development.
+- Firebase: Backend service for authentication and data storage.
