@@ -1,3 +1,4 @@
+import 'package:dtb/screens/components/button.dart';
 import 'package:flutter/material.dart';
 
 class RegisterComponent extends StatefulWidget {
@@ -96,6 +97,12 @@ class _RegisterComponentState extends State<RegisterComponent> {
             style: TextStyle(color: Colors.white),
           ),
         ),
+        //  CustomButton(
+        //   onPressed: () {
+        //     // Implement the onPressed method
+        //   },
+        //   text: 'Next',
+        // ),
       ],
     );
   }
