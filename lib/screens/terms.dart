@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'pay_bill.dart'; // Import the PayBillScreen widget
 
 class Terms extends StatefulWidget {
-  const Terms({super.key});
+  const Terms({Key? key}) : super(key: key);
 
   @override
-  State<Terms> createState() => _TermsState();
+  _TermsState createState() => _TermsState();
 }
 
 class _TermsState extends State<Terms> {
+  bool _isChecked = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Terms & Conditions',
+            style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.red,
+         iconTheme: IconThemeData(color: Colors.white),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -24,46 +33,59 @@ class _TermsState extends State<Terms> {
             Row(
               children: [
                 Checkbox(
-                  value: false,
+                  value: _isChecked,
                   onChanged: (value) {
-                    // Handle checkbox value change
+                    setState(() {
+                      _isChecked = value!;
+                    });
                   },
                 ),
-                Text(
-                  "I agree to Diamond Trust Bank's ",
-                  style: TextStyle(fontSize: 16.0),
+                Flexible(
+                  // Wrap the Text widget with Flexible
+                  child: Text(
+                    "I agree to Diamond Trust Bank's ",
+                    style: TextStyle(fontSize: 16.0),
+                  ),
                 ),
-                Text(
-                  'Terms and conditions and privacy policy',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.blue,
-                    decoration: TextDecoration.underline,
+                Flexible(
+                  // Wrap the Text widget with Flexible
+                  child: Text(
+                    'Terms and conditions and privacy policy',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
                 ),
               ],
             ),
             SizedBox(height: 24.0),
-          ],
-        ),
-      ),
-      bottomNavigationBar: SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: () {
-            // Handle accept button press
-          },
-          style: ElevatedButton.styleFrom(
-            primary: Colors.red,
-            padding: EdgeInsets.symmetric(vertical: 16.0),
-          ),
-          child: Text(
-            'Accept',
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _isChecked
+                    ? () {
+                        Navigator.pushNamed(context,
+                            '/payBill'); // Navigate to the Pay Bill screen
+                      }
+                    : null, // Disable button if checkbox is not checked
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  backgroundColor: _isChecked
+                      ? Colors.red
+                      : null, // Set button color to red if checkbox is checked
+                ),
+                child: Text(
+                  'Accept',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
