@@ -67,7 +67,7 @@ class _TermsState extends State<Terms> {
                 onPressed: _isChecked
                     ? () {
                         Navigator.pushNamed(context,
-                            '/payBill'); // Navigate to the Pay Bill screen
+                            '/bottomNavigation'); // Navigate to the Pay Bill screen
                       }
                     : null, // Disable button if checkbox is not checked
                 style: ElevatedButton.styleFrom(

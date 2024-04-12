@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'terms.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 class RegisterComponent extends StatefulWidget {
   const RegisterComponent({Key? key}) : super(key: key);
 
@@ -11,6 +13,7 @@ class RegisterComponent extends StatefulWidget {
 class _RegisterComponentState extends State<RegisterComponent> {
   String selectedCountry = 'Kenya';
   String selectedCountryCode = '+254';
+   String selectedLanguage = 'English';
   final List<Map<String, String>> countries = [
     {'name': 'Kenya', 'code': '+254'},
     {'name': 'USA', 'code': '+1'},
@@ -27,21 +30,43 @@ class _RegisterComponentState extends State<RegisterComponent> {
   TextEditingController _firstNameController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-
+TextEditingController _courseController = TextEditingController();
+TextEditingController _phoneController = TextEditingController();
   void _navigateToTerms(BuildContext context) {
     Navigator.pushNamed(context, '/terms');
   }
 
   @override
-  void dispose() {
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _emailController.dispose();
-    super.dispose();
+void dispose() {
+  _passwordController.dispose();
+  _confirmPasswordController.dispose();
+  _firstNameController.dispose();
+  _lastNameController.dispose();
+  _emailController.dispose();
+  _courseController.dispose(); 
+  _phoneController.dispose(); // Don't forget to dispose of any new controller you add
+  super.dispose();
+}
+Future<void> saveUserData() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await FirebaseFirestore.instance.collection('users').add({
+          'first_name': _firstNameController.text,
+          'last_name': _lastNameController.text,
+          'email': _emailController.text,
+          'course': _courseController.text,
+          'country': selectedCountry,
+          'language': selectedLanguage,
+          'phone': _phoneController.text,  
+        });
+        print('User data saved successfully!');
+        Navigator.pushNamed(context, '/terms');
+      } catch (e) {
+        print('Error saving user data: $e');
+        // Optionally show an error dialog or a snackbar
+      }
+    }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +112,21 @@ class _RegisterComponentState extends State<RegisterComponent> {
                   return null;
                 },
               ),
+               const SizedBox(height: 16.0),
+     TextFormField(
+      controller: _courseController,
+      decoration: InputDecoration(
+      labelText: 'Course',
+      prefixIcon: Icon(Icons.school),
+       ),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter the course';
+    }
+    return null;
+  },
+),
+
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: _emailController,
