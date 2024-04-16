@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hotel_management/user_dashboard_screen.dart';
-import 'package:hotel_management/user_signup_screen.dart'; // Import the SignUpScreen
-import 'package:font_awesome_flutter/font_awesome_flutter.dart'; // Import FontAwesome icons
+import 'package:hotel_management/user_signup_screen.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/services.dart'; // For handling exceptions
 
-class UserLoginScreen extends StatelessWidget {
+class UserLoginScreen extends StatefulWidget {
+  @override
+  _UserLoginScreenState createState() => _UserLoginScreenState();
+}
+
+class _UserLoginScreenState extends State<UserLoginScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200], // Set background color of the screen
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        backgroundColor: Colors.blue, // Set background color of the app bar
+        backgroundColor: Colors.blue,
         title: Text('User Login'),
       ),
       body: Center(
@@ -23,10 +34,11 @@ class UserLoginScreen extends StatelessWidget {
                 SizedBox(
                   width: 300,
                   child: TextFormField(
+                    controller: _usernameController,
                     decoration: InputDecoration(
-                      labelText: 'Username',
+                      labelText: 'Email',  // Changed from Username to Email for Firebase Auth
                       border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.person), // Add icon
+                      prefixIcon: Icon(Icons.email),
                     ),
                   ),
                 ),
@@ -34,11 +46,12 @@ class UserLoginScreen extends StatelessWidget {
                 SizedBox(
                   width: 300,
                   child: TextFormField(
-                    obscureText: true, // Hide password characters
+                    controller: _passwordController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.lock), // Add icon
+                      prefixIcon: Icon(Icons.lock),
                     ),
                   ),
                 ),
@@ -46,20 +59,13 @@ class UserLoginScreen extends StatelessWidget {
                 SizedBox(
                   width: 300,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // Implement user login logic here
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => UserDashboardScreen()),
-                      );
-                    },
+                    onPressed: _login,
                     child: Text('Login as User'),
                   ),
                 ),
-                SizedBox(height: 10), // Add spacing between the login button and sign-up link
+                SizedBox(height: 10),
                 TextButton(
                   onPressed: () {
-                    // Navigate to the sign-up screen
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => UserSignUpScreen()),
@@ -68,8 +74,8 @@ class UserLoginScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.person_add), // Add icon
-                      SizedBox(width: 5), // Add space between icon and text
+                      Icon(Icons.person_add),
+                      SizedBox(width: 5),
                       Text("Don't have an account? Sign up"),
                     ],
                   ),
@@ -81,4 +87,52 @@ class UserLoginScreen extends StatelessWidget {
       ),
     );
   }
+
+ void _login() async {
+  try {
+    final UserCredential user = await _auth.signInWithEmailAndPassword(
+      email: _usernameController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
+
+    if (user.user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => UserDashboardScreen()),
+      );
+    }
+  } on FirebaseAuthException catch (e) {
+    String message = 'Login failed: ';
+    switch (e.code) {
+      case 'user-not-found':
+        message += 'No user found for that email.';
+        break;
+      case 'wrong-password':
+        message += 'Wrong password provided for that user.';
+        break;
+      default:
+        message += 'Error: ${e.message}'; // Providing more specific error message
+        break;
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Login Failed'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: Text('OK'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+
+    print(e); // Log the full exception
+  } catch (e) {
+    print('An unexpected error occurred: $e');
+  }
+}
+
 }
