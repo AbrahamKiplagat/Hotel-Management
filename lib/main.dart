@@ -1,11 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_management/admin_dashboard_screen.dart';
 import 'package:hotel_management/admin_login_screen.dart';
+import 'package:hotel_management/firebase_options.dart';
 import 'package:hotel_management/user_login_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(HotelManagementApp());
 }
+
 
 class HotelManagementApp extends StatelessWidget {
   @override
