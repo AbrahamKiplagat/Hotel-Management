@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert'; // For utf8.encode
+
+import 'package:hotel_management/user_dashboard_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,14 +28,16 @@ class UserSignUpScreen extends StatefulWidget {
 class _UserSignUpScreenState extends State<UserSignUpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _emailPhoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
     _usernameController.dispose();
-    _emailPhoneController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -56,7 +62,8 @@ class _UserSignUpScreenState extends State<UserSignUpScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   buildTextFormField(_usernameController, 'Username', Icons.person),
-                  buildTextFormField(_emailPhoneController, 'Email/Phone', Icons.email),
+                  buildTextFormField(_emailController, 'Email', Icons.email),
+                  buildTextFormField(_phoneController, 'Phone Number', Icons.phone),
                   buildPasswordFormField(_passwordController, 'Password', Icons.lock),
                   buildPasswordFormField(_confirmPasswordController, 'Confirm Password', Icons.lock_outline),
                   SizedBox(height: 20),
@@ -76,6 +83,7 @@ class _UserSignUpScreenState extends State<UserSignUpScreen> {
   TextFormField buildTextFormField(TextEditingController controller, String label, IconData icon) {
     return TextFormField(
       controller: controller,
+      keyboardType: label == 'Phone Number' ? TextInputType.phone : TextInputType.text,
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(),
@@ -84,6 +92,12 @@ class _UserSignUpScreenState extends State<UserSignUpScreen> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter $label';
+        }
+        if (label == 'Email' && !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+          return 'Please enter a valid email';
+        }
+        if (label == 'Phone Number' && !RegExp(r'^\+?[0-9]{10,15}$').hasMatch(value)) {
+          return 'Please enter a valid phone number';
         }
         return null;
       },
@@ -111,49 +125,58 @@ class _UserSignUpScreenState extends State<UserSignUpScreen> {
     );
   }
 
- void _submitForm() {
-  if (_formKey.currentState?.validate() ?? false) {
-    _formKey.currentState?.save();
+  void _submitForm() {
+    if (_formKey.currentState?.validate() ?? false) {
+      _formKey.currentState?.save();
 
-    // Access Firestore instance
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
+      // Hash the password
+      var bytes = utf8.encode(_passwordController.text.trim());
+      var hashedPassword = sha256.convert(bytes).toString();
 
-    // Create user in Firestore
-    firestore.collection('users').add({
-      'username': _usernameController.text.trim(),
-      'email': _emailPhoneController.text.trim(),
-      'password': _passwordController.text.trim(), // Note: Storing passwords in plaintext is unsafe
-    }).then((value) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Registration Successful'),
-          content: Text('Welcome, ${_usernameController.text}!'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        ),
-      );
-    }).catchError((error) {
-      print('Error registering user: $error'); // Log error to console for debugging
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Registration Failed'),
-          content: Text('Failed to register. Error: $error'), // Show error in UI
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () => Navigator.of(context). pop(),
-            ),
-          ],
-        ),
-      );
-    });
+      // Access Firestore instance
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      // Create user in Firestore
+      firestore.collection('users').add({
+        'username': _usernameController.text.trim(),
+        'email': _emailController.text.trim(),
+        'phone': _phoneController.text.trim(),
+        'password': hashedPassword, // Store the hashed password
+      }).then((value) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => UserDashboardScreen()),
+        );
+      }).catchError((error) {
+        print('Error registering user: $error'); // Log error to console for debugging
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Registration Failed'),
+            content: Text('Failed to register. Error: $error'), // Show error in UI
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      });
+    }
   }
 }
 
-}
+// class UserDashboardScreen extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('User Dashboard'),
+//       ),
+//       body: Center(
+//         child: Text('User Dashboard Screen'),
+//       ),
+//     );
+//   }
+// }

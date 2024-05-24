@@ -41,46 +41,47 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBK8Dte6z2VCWzt3QH0hrqIprAuXwNMYFY',
-    appId: '1:606738930565:web:a6a37277825709fa83c2ec',
-    messagingSenderId: '606738930565',
-    projectId: 'hotel-management-a8f44',
-    authDomain: 'hotel-management-a8f44.firebaseapp.com',
-    storageBucket: 'hotel-management-a8f44.appspot.com',
+    apiKey: 'AIzaSyA7wPeSPuFYyANq9DPMb2TEh9Bdu-HmMrY',
+    appId: '1:473300758797:web:33e4cb8bcc53d5e67ec044',
+    messagingSenderId: '473300758797',
+    projectId: 'hotel-7e2d2',
+    authDomain: 'hotel-7e2d2.firebaseapp.com',
+    storageBucket: 'hotel-7e2d2.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCt4U6V65TXFjwHj1-RMr9de7TGgfBD_04',
-    appId: '1:606738930565:android:896647720ff8c4ec83c2ec',
-    messagingSenderId: '606738930565',
-    projectId: 'hotel-management-a8f44',
-    storageBucket: 'hotel-management-a8f44.appspot.com',
+    apiKey: 'AIzaSyBRtX6EFdNx0teS7lHHaG8I6w0IQbVHnMA',
+    appId: '1:473300758797:android:13d5bff94d27c0357ec044',
+    messagingSenderId: '473300758797',
+    projectId: 'hotel-7e2d2',
+    storageBucket: 'hotel-7e2d2.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAdiPRTqfqRzE3WRN8CxRDaDK5guNZ-Ex0',
-    appId: '1:606738930565:ios:385f9aa1f6b0ccbc83c2ec',
-    messagingSenderId: '606738930565',
-    projectId: 'hotel-management-a8f44',
-    storageBucket: 'hotel-management-a8f44.appspot.com',
+    apiKey: 'AIzaSyCdsrgV_he5abcPs1AjsICqUePG_Xr808M',
+    appId: '1:473300758797:ios:26f56b1bd77cfe937ec044',
+    messagingSenderId: '473300758797',
+    projectId: 'hotel-7e2d2',
+    storageBucket: 'hotel-7e2d2.appspot.com',
     iosBundleId: 'com.example.hotelManagement',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAdiPRTqfqRzE3WRN8CxRDaDK5guNZ-Ex0',
-    appId: '1:606738930565:ios:385f9aa1f6b0ccbc83c2ec',
-    messagingSenderId: '606738930565',
-    projectId: 'hotel-management-a8f44',
-    storageBucket: 'hotel-management-a8f44.appspot.com',
+    apiKey: 'AIzaSyCdsrgV_he5abcPs1AjsICqUePG_Xr808M',
+    appId: '1:473300758797:ios:26f56b1bd77cfe937ec044',
+    messagingSenderId: '473300758797',
+    projectId: 'hotel-7e2d2',
+    storageBucket: 'hotel-7e2d2.appspot.com',
     iosBundleId: 'com.example.hotelManagement',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBK8Dte6z2VCWzt3QH0hrqIprAuXwNMYFY',
-    appId: '1:606738930565:web:8e4c536658d02a7883c2ec',
-    messagingSenderId: '606738930565',
-    projectId: 'hotel-management-a8f44',
-    authDomain: 'hotel-management-a8f44.firebaseapp.com',
-    storageBucket: 'hotel-management-a8f44.appspot.com',
+    apiKey: 'AIzaSyA7wPeSPuFYyANq9DPMb2TEh9Bdu-HmMrY',
+    appId: '1:473300758797:web:88f9d0aabe6348ee7ec044',
+    messagingSenderId: '473300758797',
+    projectId: 'hotel-7e2d2',
+    authDomain: 'hotel-7e2d2.firebaseapp.com',
+    storageBucket: 'hotel-7e2d2.appspot.com',
   );
+
 }
