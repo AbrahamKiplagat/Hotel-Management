@@ -61,7 +61,7 @@ class _UserSignUpScreenState extends State<UserSignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  buildTextFormField(_usernameController, 'Username', Icons.person),
+                  buildTextFormField(_usernameController, 'Full Name', Icons.person),
                   buildTextFormField(_emailController, 'Email', Icons.email),
                   buildTextFormField(_phoneController, 'Phone Number', Icons.phone),
                   buildPasswordFormField(_passwordController, 'Password', Icons.lock),
