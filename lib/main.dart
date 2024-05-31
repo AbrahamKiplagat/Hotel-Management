@@ -12,7 +12,6 @@ void main() async {
   runApp(HotelManagementApp());
 }
 
-
 class HotelManagementApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
